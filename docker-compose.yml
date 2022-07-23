@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+    datascience-notebook:
+        container_name: jupyter
+        image: jupyter/scipy-notebook:latest
+        volumes:
+            - ./data:/data
+        ports:
+            - 8888:8888
+        command: "start-notebook.sh"
+        networks:
+            - database
+        depends_on:
+            - db
+            
+   
+    db:
+        container_name: pd_db
+        image: postgres:14
+        environment:
+            - POSTGRES_DB=main_db
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=supersecretpassword
+        ports:
+            - 5432:5432
+        networks:
+            - database
+    
+ 
+
+networks:
+    database:
+        driver: bridge
+    
